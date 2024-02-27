@@ -154,3 +154,18 @@ WHERE cd.continent IS NOT NULL --and cd.location = 'Montenegro'
 SELECT *
 FROM PortfolioProject.dbo.PercentPopulationVaccinated
 
+--Percent Of Death by countrys
+
+with asd as (
+SELECT location, population, max(cast(total_deaths as int)) as MaxDeathsNumber
+FROM PortfolioProject.dbo.CovidDeaths$
+--WHERE location = 'Montenegro'
+WHERE continent IS NOT NULL
+GROUP BY location, population
+
+)
+
+SELECT location, population, MaxDeathsNumber, (MaxDeathsNumber/population)*100 as PercentOfDeath
+FROM asd 
+ORDER BY MaxDeathsNumber DESC
+
